@@ -2,11 +2,12 @@
 #define TREE_HPP
 
 #include <array>
+#include <iterator>
 #include <memory>
 #include <optional>
 
 template <int Width>
-class TreeNode {
+class TreeNode : public std::enable_shared_from_this<TreeNode<Width>> {
 private:
     int merit;
     bool player;
@@ -33,6 +34,25 @@ public:
             for (int i = 0; i < Width - 1; ++i) {
                 this->children.value()[i]->nextPtr = WeakPtr(this->children.value()[i+1]);
             }
+        }
+    }
+
+    // Modern C++ Lesson 1: Improved type declaration within a template specifying a forward iterator.
+    template <std::forward_iterator It>
+    void fill_with_values(It& curr, It begin, It end) {
+        if (!children.has_value()) {
+            if (curr == end) {
+                this->merit = 0;
+            } else {
+                this->merit = *(curr++);
+            }
+            return;
+        }
+        for (auto& child : children.value()) {
+            // Modern C++ Lesson 3: using `enable_shared_from_this`.
+            // Allows a shared pointer to be constructed pointing to this object.
+            child->parentPtr = WeakPtr(this->shared_from_this());
+            child->fill_with_values(curr, begin, end);
         }
     }
 
@@ -73,6 +93,6 @@ public:
     bool getPlayer() {
         return player;
     }
-}
+};
 
 #endif
