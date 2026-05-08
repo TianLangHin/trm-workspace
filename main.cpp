@@ -2,11 +2,11 @@
 #include <memory>
 #include <vector>
 
-#include "alpha_beta.hpp"
-#include "computation.hpp"
+#include "algo/alpha_beta.hpp"
+#include "algo/sss.hpp"
+#include "tree/computation.hpp"
+#include "tree/tree.hpp"
 #include "heuristics.hpp"
-#include "sss.hpp"
-#include "tree.hpp"
 
 #ifndef TREE_WIDTH
 #define TREE_WIDTH 2
