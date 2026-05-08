@@ -29,3 +29,35 @@ target_include_directories(sss
     tree
 )
 
+# Advanced C++ (CMake) Lesson 4: Using functions in the CMake script to automate definitions.
+
+function(add_builder width)
+  # Advanced C++ (CMake) Lesson 3: Adding custom build targets to the toolchain.
+  add_custom_target(set-width-${width}
+    COMMAND ${CMAKE_COMMAND} -D TREE_WIDTH=${width} ${CMAKE_BINARY_DIR}
+    COMMENT "Setting the game tree width to ${width}."
+    VERBATIM
+  )
+endfunction()
+
+function(add_runner depth)
+  # Advanced C++ (CMake) Lesson 3: Adding custom targets to also run the executable.
+  add_custom_target(set-depth-${depth}
+    COMMAND (echo "${depth}\n") > temp.txt
+    COMMAND sss < temp.txt
+    COMMAND rm temp.txt
+    DEPENDS sss
+    WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
+    COMMENT "Setting the game tree depth to ${depth} and running the SSS* simulator."
+    VERBATIM
+  )
+endfunction()
+
+# Advanced C++ (CMake) Lesson 6: Automating build configurations using for-each loops.
+foreach (w 2 3 4 5 6 7 8 9 10)
+  add_builder(${w})
+endforeach()
+
+foreach (d 2 3 4 5 6 7 8 9 10)
+  add_runner(${d})
+endforeach()
