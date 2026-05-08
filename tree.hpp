@@ -23,7 +23,7 @@ private:
 
 public:
     // Modern C++ Lesson 3: Uniform initialisation syntax used in the constructor.
-    TreeNode(int depth, bool player): merit {0}, player {player}, parentPtr {}, nextPtr{} {
+    TreeNode(int depth, bool player): merit {0}, player {player}, parentPtr {}, nextPtr {} {
         if (depth <= 0) {
             this->children = {};
         } else {
